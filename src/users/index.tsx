@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
 import Form from './Form';
 import UserDetails from './UserDetails';
 import UserList from './UserList';
@@ -9,6 +9,7 @@ export type User = {
     lastName: string,
     email: string,
     phone: string,
+    address: string,
     _id: string,
 }
 
@@ -16,18 +17,27 @@ type UsersPanelState = {
     users: Array<User>
 }
 
-export class UsersPanel extends React.Component<{}, UsersPanelState> {
+type Props = RouteComponentProps
+
+export class UsersPanel extends React.Component<Props, UsersPanelState> {
     constructor(props: any) {
         super(props)
         this.state = {
             users: []
         }
+
+        this.updateUserList = this.updateUserList.bind(this)
     }
 
     componentDidMount() {
         fetch("http://localhost:8081/api/users")
             .then(resp => resp.json())
             .then(resp => this.setState({ users: resp.users }))
+    }
+
+    updateUserList(users: Array<User>) {
+        this.setState({ users })
+        this.props.history.push("/users")
     }
 
     render() {
@@ -38,8 +48,17 @@ export class UsersPanel extends React.Component<{}, UsersPanelState> {
             <div>
                 <Switch>
                     <Route path="/users/new" >
-                        <Form />
+                        <Form updateUserList={this.updateUserList} />
                     </Route >
+                    <Route path="/users/:id/edit"
+                        render={({ match }) => {
+                            // eslint-disable-next-line
+                            const user = users.find(u => u._id == match.params.id)
+                            if (!user) return <Redirect to="/users" />
+
+                            return <Form user={user} updateUserList={this.updateUserList} />
+                        }}
+                    />
                     <Route path="/users/:id"
                         render={({ match }) => {
                             // eslint-disable-next-line
@@ -48,8 +67,7 @@ export class UsersPanel extends React.Component<{}, UsersPanelState> {
 
                             return <UserDetails user={user} />
                         }}
-                    >
-                    </Route >
+                    />
                     <Route path="/users" >
                         <UserList users={users} />
                     </Route >
@@ -60,4 +78,4 @@ export class UsersPanel extends React.Component<{}, UsersPanelState> {
 
 }
 
-export default UsersPanel;
+export default withRouter(UsersPanel);

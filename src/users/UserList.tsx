@@ -17,7 +17,7 @@ export class UserList extends React.Component<Props> {
             >
                 {user.firstName} : {user.lastName} : {user.email}
                 <Link to={`/users/${user._id}`}>More</Link>
-                <button>Edit</button>
+                <Link to={`/users/${user._id}/edit`}>Edit</Link>
                 <button>Delete</button>
             </p>)
 
