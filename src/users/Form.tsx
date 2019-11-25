@@ -28,7 +28,6 @@ export class Form extends React.Component<{}, FormState> {
 
     render() {
         const { email, firstName, lastName, phone } = this.state;
-
         return (
             <>
                 <label htmlFor="firstName">Name</label>

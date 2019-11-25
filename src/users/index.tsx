@@ -1,16 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-interface User {
+import { Switch, Route, Redirect } from 'react-router-dom';
+import Form from './Form';
+import UserDetails from './UserDetails';
+import UserList from './UserList';
+
+export type User = {
     firstName: string,
     lastName: string,
     email: string,
+    phone: string,
+    _id: string,
 }
 
-type UserListState = {
+type UsersPanelState = {
     users: Array<User>
 }
 
-export class UserList extends React.Component<{}, UserListState> {
+export class UsersPanel extends React.Component<{}, UsersPanelState> {
     constructor(props: any) {
         super(props)
         this.state = {
@@ -19,33 +25,39 @@ export class UserList extends React.Component<{}, UserListState> {
     }
 
     componentDidMount() {
-        fetch("api/users")
+        fetch("http://localhost:8081/api/users")
             .then(resp => resp.json())
             .then(resp => this.setState({ users: resp.users }))
     }
 
     render() {
         const { users } = this.state;
-
         if (users.length === 0) return (<h1>Please wait</h1>)
 
-        const size = 10;
-        const list = users.filter((u, i) => i < size).map(user =>
-            <p>
-                {user.firstName} : {user.lastName} : {user.email}
-                <button>View</button>
-                <button>Edit</button>
-                <button>Delete</button>
-            </p>)
-
         return (
-            <>
-                <Link to="/users/new">New user</Link>
-                {list}
-            </>
+            <div>
+                <Switch>
+                    <Route path="/users/new" >
+                        <Form />
+                    </Route >
+                    <Route path="/users/:id"
+                        render={({ match }) => {
+                            // eslint-disable-next-line
+                            const user = users.find(u => u._id == match.params.id)
+                            if (!user) return <Redirect to="/users" />
+
+                            return <UserDetails user={user} />
+                        }}
+                    >
+                    </Route >
+                    <Route path="/users" >
+                        <UserList users={users} />
+                    </Route >
+                </Switch>
+            </div>
         );
     }
 
 }
 
-export default UserList;
+export default UsersPanel;
