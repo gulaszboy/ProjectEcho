@@ -68,8 +68,11 @@ export class UsersPanel extends React.Component<Props, UsersPanelState> {
                             return <UserDetails user={user} />
                         }}
                     />
-                    <Route path="/users" >
-                        <UserList users={users} />
+                    <Route path="/" >
+                        <UserList
+                            users={users}
+                            updateUserList={this.updateUserList}
+                        />
                     </Route >
                 </Switch>
             </div>
