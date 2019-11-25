@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface FormState {
     email: string,
@@ -41,6 +42,9 @@ export class Form extends React.Component<{}, FormState> {
 
                 <label htmlFor="phone">Name</label>
                 <input type="text" id="phone" placeholder="Phone" name="phone" value={phone} onChange={this.handleChange} />
+
+                <button>Send</button>
+                <Link to="/users">Cancel</Link>
             </>
         )
     }

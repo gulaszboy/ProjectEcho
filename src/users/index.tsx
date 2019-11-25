@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 interface User {
     firstName: string,
     lastName: string,
@@ -40,7 +40,7 @@ export class UserList extends React.Component<{}, UserListState> {
 
         return (
             <>
-                <button>New user</button>
+                <Link to="/users/new">New user</Link>
                 {list}
             </>
         );
