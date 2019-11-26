@@ -2,6 +2,46 @@ import React from 'react';
 import { User } from '.';
 import { Link } from 'react-router-dom';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faInfo } from '@fortawesome/free-solid-svg-icons'
+
+import styled from 'styled-components';
+import TopBar from '../general/TopBar';
+
+const Wrapper = styled.div`
+    width: 60%;
+
+    padding: 15px 40px;
+
+    background: #eee;
+    margin: 10px auto;
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+`
+
+const Button = styled.button`
+    width:30px;
+    height: 30px;
+
+    border-radius: 5px;
+
+    margin: 3px;
+    color: black;
+    cursor: pointer
+`
+
+const RestyledLink = styled(Link)`
+    color: black;
+    text-decoration: none;
+`
+
+const UserData = styled.div`
+    font-size: 20px
+`
+
 type Props = {
     users: Array<User>,
     updateUserList: (users: Array<User>) => void,
@@ -34,18 +74,34 @@ export class UserList extends React.Component<Props> {
 
         const size = 10;
         const list = users.filter((u, i) => i < size).map(user =>
-            <p
+            <Wrapper
                 key={user._id}
             >
-                {user.firstName} : {user.lastName} : {user.email}
-                <Link to={`/users/${user._id}`}>More</Link>
-                <Link to={`/users/${user._id}/edit`}>Edit</Link>
-                <button type="button" onClick={() => this.deleteUser(user._id)}>Delete</button>
-            </p>)
+                <UserData>{user.firstName} {user.lastName} ( {user.email} )</UserData>
+                <div>
+                    <RestyledLink to={`/users/${user._id}`}>
+                        <Button type="button">
+
+                            <FontAwesomeIcon icon={faInfo} />
+
+                        </Button>
+                    </RestyledLink>
+                    <RestyledLink to={`/users/${user._id}/edit`}>
+                        <Button type="button">
+                            <FontAwesomeIcon icon={faEdit} />
+                        </Button>
+                    </RestyledLink>
+                    <Button type="button" onClick={() => this.deleteUser(user._id)}>
+                        <b>x</b>
+                    </Button>
+                </div>
+
+            </Wrapper>
+        )
 
         return (
             <>
-                <Link to="/users/new">New user</Link>
+                <TopBar link={{ to: "users/new", text: "New user" }}> | Users </TopBar>
                 {list}
             </>
         )
