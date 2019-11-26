@@ -41,37 +41,26 @@ export class PostsPanel extends React.Component<Props, State> {
         if (posts.length === 0) return (<h1>Please wait</h1>)
 
         return (
-            <div>
-                <Switch>
-                    <Route path="/posts/new" >
-                        <Form updateList={this.updateList} />
-                    </Route >
-                    <Route path="/posts/:id/edit"
-                        render={({ match }) => {
-                            // eslint-disable-next-line
-                            const post = posts.find(p => p._id == match.params.id)
-                            if (!post) return <Redirect to="/posts" />
+            <Switch>
+                <Route path="/posts/new" >
+                    <Form updateList={this.updateList} />
+                </Route >
+                <Route path="/posts/:id/edit"
+                    render={({ match }) => {
+                        // eslint-disable-next-line
+                        const post = posts.find(p => p._id == match.params.id)
+                        if (!post) return <Redirect to="/posts" />
 
-                            return <Form post={post} updateList={this.updateList} />
-                        }}
+                        return <Form post={post} updateList={this.updateList} />
+                    }}
+                />
+                <Route path="/" >
+                    <PostList
+                        posts={posts}
+                        updateList={this.updateList}
                     />
-                    {/* <Route path="/posts/:id"
-                        render={({ match }) => {
-                            // eslint-disable-next-line
-                            const user = users.find(u => u._id == match.params.id)
-                            if (!user) return <Redirect to="/users" />
-
-                            return <UserDetails user={user} />
-                        }}
-                    /> */}
-                    <Route path="/" >
-                        <PostList
-                            posts={posts}
-                            updateList={this.updateList}
-                        />
-                    </Route >
-                </Switch>
-            </div>
+                </Route >
+            </Switch>
         );
     }
 
