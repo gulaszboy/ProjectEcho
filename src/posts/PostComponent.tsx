@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { User } from '../users';
+import CommentForm from './CommentForm';
 
 const TitleLine = styled.div`
     display: flex;
@@ -28,6 +30,7 @@ const Wrapper = styled.div`
 
     background: #eee;
     margin: 10px auto;
+
     border-radius: 10px;
 `
 
@@ -54,12 +57,39 @@ const Body = styled.div`
 
 type Props = {
     post: Post,
+    users?: Array<User>,
+    updateList?: (posts: Array<Post>) => void,
     deletePost?: (id: string) => void,
 }
 
 export class PostComponent extends React.Component<Props> {
+    constructor(props: Props) {
+        super(props);
+
+        this.handleDeleteComment = this.handleDeleteComment.bind(this)
+    }
+
+    handleDeleteComment(id: string) {
+        const { post, updateList } = this.props;
+
+        fetch(`http://localhost:8081/api/posts/${post._id}/comments/${id}`, {
+            method: "DELETE",
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(resp => resp.json())
+            .then(resp => updateList ? updateList(resp) : null)
+    }
+
     render() {
-        const { post, deletePost } = this.props;
+        const { post, deletePost, users, updateList } = this.props;
+        const comments = post.comments.map(c =>
+            <div>
+                {c.author}: {c.text} <button onClick={() => this.handleDeleteComment(c._id)}>x</button>
+            </div>
+        )
         return (
             <Wrapper >
                 <TitleLine>
@@ -79,6 +109,8 @@ export class PostComponent extends React.Component<Props> {
 
                 {post.author.firstName ? <Author>Added by: {post.author.firstName} {post.author.lastName} {`(${post.author.email})`}</Author> : null}
                 <Body>{post.body}</Body>
+                {comments}
+                {users && updateList ? <CommentForm users={users} post={post} updateList={updateList} /> : null}
             </Wrapper>
         )
     }

@@ -4,15 +4,22 @@ import { User } from '../users';
 import PostList from './PostList';
 import Form from './Form';
 
+type Comment = {
+    text: string,
+    author: string,
+    _id: string,
+}
+
 export type Post = {
     title: string,
     body: string,
     author: User,
+    comments: Array<Comment>
     _id: string,
 }
 
 type State = {
-    posts: Array<Post>
+    posts: Array<Post>,
 }
 
 type Props = RouteComponentProps
@@ -21,7 +28,7 @@ export class PostsPanel extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {
-            posts: []
+            posts: [],
         }
         this.updateList = this.updateList.bind(this)
     }
