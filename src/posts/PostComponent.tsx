@@ -17,7 +17,7 @@ const Title = styled.h2`
     margin-bottom: 5px;
 `
 const Author = styled.h5`
-    margin-top: 5px;
+    margin: 5px 0;
     text-align: left;
 `
 
@@ -39,6 +39,7 @@ const Button = styled.button`
 
     margin: 3px;
     color: black;
+    cursor: pointer;
 `
 
 const RestyledLink = styled(Link)`
@@ -48,11 +49,12 @@ const RestyledLink = styled(Link)`
 
 const Body = styled.div`
     text-align: left;
+    margin: 20px 0;
 `
 
 type Props = {
     post: Post,
-    deletePost: (id: string) => void,
+    deletePost?: (id: string) => void,
 }
 
 export class PostComponent extends React.Component<Props> {
@@ -64,18 +66,18 @@ export class PostComponent extends React.Component<Props> {
                     <Title>{post.title}</Title>
 
                     <div>
-                        <Button type="button">
-                            <RestyledLink to={`/posts/${post._id}/edit`}>
+                        <RestyledLink to={`/posts/${post._id}/edit`}>
+                            <Button type="button">
                                 <FontAwesomeIcon icon={faEdit} />
-                            </RestyledLink>
-                        </Button>
-                        <Button type="button" onClick={() => deletePost(post._id)}>
+                            </Button>
+                        </RestyledLink>
+                        {deletePost ? <Button type="button" onClick={() => deletePost(post._id)}>
                             <b>x</b>
-                        </Button>
+                        </Button> : null}
                     </div>
                 </TitleLine>
 
-                <Author>Added by: {post.author.firstName} {post.author.lastName} {`(${post.author.email})`}</Author>
+                {post.author.firstName ? <Author>Added by: {post.author.firstName} {post.author.lastName} {`(${post.author.email})`}</Author> : null}
                 <Body>{post.body}</Body>
             </Wrapper>
         )

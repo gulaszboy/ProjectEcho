@@ -37,6 +37,7 @@ const Button = styled.button`
 
     margin: 3px;
     color: black;
+    cursor: pointer;
 `
 
 type Props = {
@@ -57,9 +58,11 @@ export class TopBar extends React.Component<Props> {
                         {this.props.children}
                     </Logo>
                     {link ?
-                        <Button type="button">
-                            <RestyledLink to={link.to}>{link.text}</RestyledLink>
-                        </Button>
+                        <RestyledLink to={link.to}>
+                            <Button type="button">
+                                {link.text}
+                            </Button>
+                        </RestyledLink>
                         : null}
                 </Wrapper>
             </Bar>

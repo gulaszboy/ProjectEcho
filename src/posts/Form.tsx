@@ -18,7 +18,13 @@ const Wrapper = styled.div`
 `
 
 const InputElement = styled.div`
-    margin: 10px;
+    max-width: 373px;
+    margin: 10px auto;
+    text-align: left;
+`
+
+const TitleInput = styled.input`
+    width: 331px;
 `
 
 const Button = styled.button`
@@ -28,6 +34,12 @@ const Button = styled.button`
 
     margin: 5px;
     color: black;
+    cursor: pointer;
+
+    :disabled {
+        opacity: 0.65;
+        cursor: inherit;
+    };
 `
 
 
@@ -122,7 +134,7 @@ export class Form extends React.Component<Props, State> {
 
                         <InputElement>
                             <label htmlFor="title">Title: </label>
-                            <input type="text" id="title" placeholder="Title" name="title" value={title} onChange={this.handleChange} />
+                            <TitleInput type="text" id="title" placeholder="Title" name="title" value={title} onChange={this.handleChange} />
                         </InputElement>
                         <InputElement>
                             <textarea value={body} onChange={this.handleChange} name="body" rows={8} cols={50} placeholder="Your article" />
@@ -130,9 +142,11 @@ export class Form extends React.Component<Props, State> {
 
 
                         <Button disabled={isButtonDisabled}>Send</Button>
-                        <Button type="button">
-                            <RestyledLink to="/posts">Cancel</RestyledLink>
-                        </Button>
+                        <RestyledLink to="/posts">
+                            <Button type="button">
+                                Cancel
+                            </Button>
+                        </RestyledLink>
                     </form>
                 </Wrapper>
             </>
