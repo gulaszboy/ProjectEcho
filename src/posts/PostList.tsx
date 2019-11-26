@@ -34,7 +34,7 @@ export class PostList extends React.Component<Props> {
 
         const size = 10;
         const list = posts.filter((p, i) => i < size).map(post =>
-            <p
+            <div
                 key={post._id}
             >
                 <div>{post.title}</div>
@@ -43,11 +43,11 @@ export class PostList extends React.Component<Props> {
                 <Link to={`/posts/${post._id}`}>More</Link>
                 <Link to={`/posts/${post._id}/edit`}>Edit</Link>
                 <button type="button" onClick={() => this.deletePost(post._id)}>Delete</button>
-            </p>)
+            </div>)
 
         return (
             <>
-                <Link to="/posts/new">New user</Link>
+                <Link to="/posts/new">New post</Link>
                 {list}
             </>
         )

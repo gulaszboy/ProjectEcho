@@ -1,7 +1,8 @@
 import React from 'react';
-import { Switch, Route, withRouter, RouteComponentProps } from 'react-router-dom';
+import { Switch, Route, withRouter, RouteComponentProps, Redirect } from 'react-router-dom';
 import { User } from '../users';
 import PostList from './PostList';
+import Form from './Form';
 
 export type Post = {
     title: string,
@@ -43,18 +44,18 @@ export class PostsPanel extends React.Component<Props, State> {
             <div>
                 <Switch>
                     <Route path="/posts/new" >
-                        {/* <Form updateUserList={this.updateUserList} /> */}
+                        <Form updateList={this.updateList} />
                     </Route >
-                    {/* <Route path="/posts/:id/edit"
+                    <Route path="/posts/:id/edit"
                         render={({ match }) => {
                             // eslint-disable-next-line
-                            const user = users.find(u => u._id == match.params.id)
-                            if (!user) return <Redirect to="/users" />
+                            const post = posts.find(p => p._id == match.params.id)
+                            if (!post) return <Redirect to="/posts" />
 
-                            return <Form user={user} updateUserList={this.updateUserList} />
+                            return <Form post={post} updateList={this.updateList} />
                         }}
                     />
-                    <Route path="/posts/:id"
+                    {/* <Route path="/posts/:id"
                         render={({ match }) => {
                             // eslint-disable-next-line
                             const user = users.find(u => u._id == match.params.id)
