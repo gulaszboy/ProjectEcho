@@ -1,56 +1,51 @@
 import React from 'react';
-import { Switch, Route, Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
-import Form from './Form';
-import UserDetails from './UserDetails';
-import UserList from './UserList';
+import { Switch, Route, withRouter, RouteComponentProps } from 'react-router-dom';
+import { User } from '../users';
+import PostList from './PostList';
 
-export type User = {
-    firstName: string,
-    lastName: string,
-    email: string,
-    phone: string,
-    address: string,
+export type Post = {
+    title: string,
+    body: string,
+    author: User,
     _id: string,
 }
 
-type UsersPanelState = {
-    users: Array<User>
+type State = {
+    posts: Array<Post>
 }
 
 type Props = RouteComponentProps
 
-export class UsersPanel extends React.Component<Props, UsersPanelState> {
+export class PostsPanel extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {
-            users: []
+            posts: []
         }
-
-        this.updateUserList = this.updateUserList.bind(this)
+        this.updateList = this.updateList.bind(this)
     }
 
     componentDidMount() {
-        fetch("http://localhost:8081/api/users")
+        fetch("http://localhost:8081/api/posts")
             .then(resp => resp.json())
-            .then(resp => this.setState({ users: resp.users }))
+            .then(resp => this.setState({ posts: resp }))
     }
-
-    updateUserList(users: Array<User>) {
-        this.setState({ users })
-        this.props.history.push("/users")
+    updateList(posts: Array<Post>) {
+        this.setState({ posts })
+        this.props.history.push("/posts")
     }
 
     render() {
-        const { users } = this.state;
-        if (users.length === 0) return (<h1>Please wait</h1>)
+        const { posts } = this.state;
+        if (posts.length === 0) return (<h1>Please wait</h1>)
 
         return (
             <div>
                 <Switch>
-                    <Route path="/users/new" >
-                        <Form updateUserList={this.updateUserList} />
+                    <Route path="/posts/new" >
+                        {/* <Form updateUserList={this.updateUserList} /> */}
                     </Route >
-                    <Route path="/users/:id/edit"
+                    {/* <Route path="/posts/:id/edit"
                         render={({ match }) => {
                             // eslint-disable-next-line
                             const user = users.find(u => u._id == match.params.id)
@@ -59,7 +54,7 @@ export class UsersPanel extends React.Component<Props, UsersPanelState> {
                             return <Form user={user} updateUserList={this.updateUserList} />
                         }}
                     />
-                    <Route path="/users/:id"
+                    <Route path="/posts/:id"
                         render={({ match }) => {
                             // eslint-disable-next-line
                             const user = users.find(u => u._id == match.params.id)
@@ -67,11 +62,11 @@ export class UsersPanel extends React.Component<Props, UsersPanelState> {
 
                             return <UserDetails user={user} />
                         }}
-                    />
+                    /> */}
                     <Route path="/" >
-                        <UserList
-                            users={users}
-                            updateUserList={this.updateUserList}
+                        <PostList
+                            posts={posts}
+                            updateList={this.updateList}
                         />
                     </Route >
                 </Switch>
@@ -81,4 +76,4 @@ export class UsersPanel extends React.Component<Props, UsersPanelState> {
 
 }
 
-export default withRouter(UsersPanel);
+export default withRouter(PostsPanel) 

@@ -1,20 +1,25 @@
 import React from 'react';
 import './App.css';
-import UserList from './users';
+import UsersPanel from './users';
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { Switch, Route } from "react-router-dom";
+import PostsPanel from './posts/';
 
 const App: React.FC = () => {
     return (
         <Router>
             <div className="App">
                 <Switch>
-                    <Route path="/" >
-                        <UserList />
-                    </Route >
+
                     <Route path="/users" >
-                        <UserList />
+                        <UsersPanel />
+                    </Route >
+                    <Route path="/posts" >
+                        <PostsPanel />
+                    </Route >
+                    <Route path="/" >
+                        <UsersPanel />
                     </Route >
                 </Switch>
             </div>
