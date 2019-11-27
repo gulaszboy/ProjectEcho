@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { User } from '../users';
 import CommentForm from './CommentForm';
+import CommentComponent from './CommentComponent';
 
 const TitleLine = styled.div`
     display: flex;
@@ -85,11 +86,10 @@ export class PostComponent extends React.Component<Props> {
 
     render() {
         const { post, deletePost, users, updateList } = this.props;
-        const comments = post.comments.map(c =>
-            <div>
-                {c.author}: {c.text} <button onClick={() => this.handleDeleteComment(c._id)}>x</button>
-            </div>
-        )
+        const comments = post.comments.map(c => (
+            <CommentComponent comment={c} deleteComment={this.handleDeleteComment} key={c._id} />
+        ))
+
         return (
             <Wrapper >
                 <TitleLine>

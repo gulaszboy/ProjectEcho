@@ -4,9 +4,9 @@ import { User } from '../users';
 import PostList from './PostList';
 import Form from './Form';
 
-type Comment = {
+export type Comment = {
     text: string,
-    author: string,
+    author: User,
     _id: string,
 }
 

@@ -1,6 +1,46 @@
 import React from 'react';
 import { User } from '../users';
 import { Post } from '.';
+import styled from 'styled-components';
+
+const Wrapper = styled.form`
+    width: 60%;
+
+    padding: 5px 20px;
+
+    background: #ddd;
+    margin-left: auto;
+    margin-top: 5px;
+
+    border-radius: 10px;
+
+    text-align: right;
+`
+
+const Button = styled.button`
+    height: 30px;
+
+    border-radius: 5px;
+
+    margin: 5px 0;
+    color: black;
+    cursor: pointer;
+
+    :disabled {
+        opacity: 0.65;
+        cursor: inherit;
+    };
+`
+
+const InputElement = styled.div`
+    width: 100%;
+    margin: 5px 0;
+    text-align: right;
+`
+
+const TextArea = styled.textarea`
+    width: calc(100% - 5px);
+`
 
 type Props = {
     users: Array<User>,
@@ -59,17 +99,20 @@ export class CommentForm extends React.Component<Props, State> {
 
         const userList = users.map((val, i) => <option value={val._id} key={val._id}>{val.firstName} {val.lastName}</option>)
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label htmlFor="author">Author: </label>
-                <select id="author" name="author" value={author} onChange={this.handleChange}>
-                    <option disabled hidden value="" > Pick user </option>
-                    {userList}
-                </select>
+            <Wrapper onSubmit={this.handleSubmit}>
+                <InputElement>
+                    <label htmlFor="author">Author: </label>
+                    <select id="author" name="author" value={author} onChange={this.handleChange}>
+                        <option disabled hidden value="" > Pick user </option>
+                        {userList}
+                    </select>
+                </InputElement>
+                <InputElement>
+                    <TextArea value={text} onChange={this.handleChange} name="text" rows={4} cols={50} placeholder="Your comment" />
+                </InputElement>
 
-                <label htmlFor="text">Text:</label>
-                <input type="text" id="text" placeholder="Your comment" name="text" value={text} onChange={this.handleChange} />
-                <button disabled={isButtonDisabled}>Add</button>
-            </form>
+                <Button disabled={isButtonDisabled}>Add</Button>
+            </Wrapper>
         )
     }
 }
