@@ -1,15 +1,15 @@
 import React from 'react';
-import './App.css';
 import UsersPanel from './users';
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { Switch, Route } from "react-router-dom";
 import PostsPanel from './posts/';
+import Landing from './landing';
 
 const App: React.FC = () => {
     return (
         <Router>
-            <div className="App">
+            <div>
                 <Switch>
 
                     <Route path="/users" >
@@ -19,7 +19,7 @@ const App: React.FC = () => {
                         <PostsPanel />
                     </Route >
                     <Route path="/" >
-                        <UsersPanel />
+                        <Landing />
                     </Route >
                 </Switch>
             </div>
